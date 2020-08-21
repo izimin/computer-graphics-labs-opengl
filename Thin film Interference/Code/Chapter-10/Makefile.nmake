@@ -1,0 +1,29 @@
+#
+# Makefile to build VBO examples for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+EXES = rc-specular-torus-1.exe rc-specular-torus-2.exe rc-specular-torus-3.exe rc-specular-torus-4.exe
+
+all: $(EXES)
+
+rc-specular-torus-1.exe: rc-specular-torus-1.obj Matrix4x4.obj Torus-1.obj $(OBJS) version.res
+	$(link) rc-specular-torus-1.obj Matrix4x4.obj Torus-1.obj $(OBJS) version.res $(LLDLIBS)
+
+rc-specular-torus-2.exe: rc-specular-torus-2.obj Matrix4x4.obj Torus-2.obj $(OBJS) version.res
+	$(link) rc-specular-torus-2.obj Matrix4x4.obj Torus-2.obj $(OBJS) version.res $(LLDLIBS)
+
+rc-specular-torus-3.exe: rc-specular-torus-3.obj Matrix4x4.obj Torus-3.obj $(OBJS) version.res
+	$(link) rc-specular-torus-3.obj Matrix4x4.obj Torus-3.obj $(OBJS) version.res $(LLDLIBS)
+
+rc-specular-torus-4.exe: rc-specular-torus-4.obj Matrix4x4.obj Torus-4.obj $(OBJS) version.res
+	$(link) rc-specular-torus-4.obj Matrix4x4.obj Torus-4.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del $(EXES) $(OBJS) version.res rc-specular-torus-1.obj rc-specular-torus-2.obj rc-specular-torus-3.obj rc-specular-torus-4.obj Matrix4x4.obj Torus-1.obj Torus-2.obj Torus-3.obj Torus-4.obj 2> nul
+
+!include <..\rules.win32>

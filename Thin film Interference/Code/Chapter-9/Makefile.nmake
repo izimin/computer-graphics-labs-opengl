@@ -1,0 +1,41 @@
+#
+# Makefile to build register combiners examples for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+EXES = rc-info.exe rc-diffuse-1.exe rc-diffuse-2.exe rc-diffuse-3.exe rc-diffuse-torus.exe rc-specular-1.exe rc-specular-2.exe rc-specular-torus.exe
+
+all: $(EXES)
+
+rc-info.exe: rc-info.obj $(OBJS) version.res
+	$(link) rc-info.obj $(OBJS) version.res $(LLDLIBS)
+
+rc-diffuse-1.exe: rc-diffuse-1.obj $(OBJS) version.res
+	$(link) rc-diffuse-1.obj $(OBJS) version.res $(LLDLIBS)
+
+rc-diffuse-2.exe: rc-diffuse-2.obj $(OBJS) version.res
+	$(link) rc-diffuse-2.obj $(OBJS) version.res $(LLDLIBS)
+
+rc-diffuse-3.exe: rc-diffuse-3.obj $(OBJS) version.res
+	$(link) rc-diffuse-3.obj $(OBJS) version.res $(LLDLIBS)
+
+rc-diffuse-torus.exe: rc-diffuse-torus.obj Torus.obj $(OBJS) version.res
+	$(link) rc-diffuse-torus.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+rc-specular-1.exe: rc-specular-1.obj $(OBJS) version.res
+	$(link) rc-specular-1.obj $(OBJS) version.res $(LLDLIBS)
+
+rc-specular-2.exe: rc-specular-2.obj $(OBJS) version.res
+	$(link) rc-specular-2.obj $(OBJS) version.res $(LLDLIBS)
+
+rc-specular-torus.exe: rc-specular-torus.obj Matrix4x4.obj Torus.obj $(OBJS) version.res
+	$(link) rc-specular-torus.obj Matrix4x4.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del $(EXES) $(OBJS) version.res rc-info.obj rc-diffuse-1.obj rc-diffuse-2.obj rc-diffuse-3.obj rc-diffuse-torus.obj rc-specular-1.obj rc-specular-2.obj rc-specular-torus.obj Matrix4x4.obj Torus.obj 2> nul
+
+!include <..\rules.win32>

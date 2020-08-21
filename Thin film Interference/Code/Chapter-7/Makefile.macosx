@@ -1,0 +1,24 @@
+#
+# Makefile to build examples for chapter 7 for Mac OS X
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+include ../make.inc.macosx
+
+
+
+ALL = simple-particles
+
+
+all: $(ALL)
+
+simple-particles: simple-particles.o ParticleSystem.o $(OBJS)
+	$(CC) $(LDFLAGS) simple-particles.o ParticleSystem.o $(OBJS) -o simple-particles $(LIBS) -lc
+
+
+clean:
+	rm -r -f $(ALL) $(OBJS) simple-particles.o ParticleSystem.o 2> /dev/null
+
+
+include ../rules.macosx

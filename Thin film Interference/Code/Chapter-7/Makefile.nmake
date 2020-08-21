@@ -1,0 +1,18 @@
+#
+# Makefile to build sample application showing usage of ARB_point_parameters and ARB_point_sprite
+#
+# Author: Alex V. Boreskoff <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+default: simple-particles.exe 
+
+simple-particles.exe: simple-particles.obj ParticleSystem.obj $(OBJS) version.res
+	$(link) simple-particles.obj ParticleSystem.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del simple-particles.exe simple-particles.obj ParticleSystem.obj $(OBJS) version.res > nul
+
+!include <..\rules.win32>

@@ -1,0 +1,26 @@
+#
+# Makefile to build NV_texture_shader examples for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+INC  = $(INC) -I$(PBUFFERINC)
+EXES = distance-attenuation.exe reflective-torus.exe
+
+all: $(EXES)
+
+distance-attenuation.exe: distance-attenuation.obj $(OBJS) version.res
+	$(link) distance-attenuation.obj $(OBJS) version.res $(LLDLIBS)
+
+
+reflective-torus.exe: reflective-torus.obj Torus.obj Matrix3D.obj $(OBJS) version.res
+	$(link) reflective-torus.obj Torus.obj Matrix3D.obj $(OBJS) version.res $(LLDLIBS)
+
+
+clean:
+	@del $(EXES) $(OBJS) version.res distance-attenuation.obj reflective-torus.obj Torus.obj Matrix3D.obj 2> nul
+
+!include <..\rules.win32>

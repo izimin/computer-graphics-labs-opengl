@@ -1,0 +1,69 @@
+#
+# Makefile for GLSL example for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+INC  = $(INC) -I$(PBUFFERINC)
+EXES   = glsl-cellular.exe glsl-info.exe glsl-example.exe glsl-example-2.exe glsl-diffuse.exe glsl-specular.exe glsl-specular-2.exe glsl-ocean.exe glsl-eroded.exe glsl-gooch.exe glsl-thin-layer.exe glsl-film.exe glsl-aniso.exe glsl-lava.exe glsl-film-2.exe
+CFLAGS = $(CFLAGS) /GX
+
+all: $(EXES)
+
+
+glsl-info.exe: glsl-info.obj $(OBJS) version.res
+	$(link) glsl-info.obj $(OBJS) version.res $(LLDLIBS)
+
+
+glsl-example.exe: glsl-example.obj $(OBJS) version.res
+	$(link) glsl-example.obj $(OBJS) version.res $(LLDLIBS)
+
+
+glsl-example-2.exe: glsl-example-2.obj GlslProgram.obj $(OBJS) version.res
+	$(link) glsl-example-2.obj GlslProgram.obj $(OBJS) version.res $(LLDLIBS)
+
+
+glsl-diffuse.exe: glsl-diffuse.obj GlslProgram.obj $(OBJS) version.res
+	$(link) glsl-diffuse.obj GlslProgram.obj $(OBJS) version.res $(LLDLIBS)
+
+glsl-specular.exe: glsl-specular.obj GlslProgram.obj Torus.obj $(OBJS) version.res
+	$(link) glsl-specular.obj GlslProgram.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+
+glsl-specular-2.exe: glsl-specular-2.obj GlslProgram.obj Torus.obj $(OBJS) version.res
+	$(link) glsl-specular-2.obj GlslProgram.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+glsl-cellular.exe: glsl-cellular.obj GlslProgram.obj Torus.obj $(OBJS) version.res
+	$(link) glsl-cellular.obj GlslProgram.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+glsl-ocean.exe: glsl-ocean.obj GlslProgram.obj libTexture3D.obj $(OBJS) version.res
+	$(link) glsl-ocean.obj GlslProgram.obj libTexture3D.obj $(OBJS) version.res $(LLDLIBS)
+
+glsl-eroded.exe: glsl-eroded.obj GlslProgram.obj Torus.obj $(OBJS) version.res
+	$(link) glsl-eroded.obj GlslProgram.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+glsl-gooch.exe: glsl-gooch.obj GlslProgram.obj Torus.obj $(OBJS) version.res
+	$(link) glsl-gooch.obj GlslProgram.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+glsl-thin-layer.exe: glsl-thin-layer.obj GlslProgram.obj Torus.obj $(OBJS) version.res
+	$(link) glsl-thin-layer.obj GlslProgram.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+glsl-film.exe: glsl-film.obj GlslProgram.obj boxes.obj PBuffer.obj $(OBJS) version.res
+	$(link) glsl-film.obj GlslProgram.obj boxes.obj PBuffer.obj $(OBJS) version.res $(LLDLIBS)
+
+glsl-film-2.exe: glsl-film-2.obj GlslProgram.obj boxes.obj PBuffer.obj $(OBJS) version.res
+	$(link) glsl-film-2.obj GlslProgram.obj boxes.obj PBuffer.obj $(OBJS) version.res $(LLDLIBS)
+
+glsl-aniso.exe: glsl-aniso.obj GlslProgram.obj Torus.obj $(OBJS) version.res
+	$(link) glsl-aniso.obj GlslProgram.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+glsl-lava.exe: glsl-lava.obj GlslProgram.obj libTexture3D.obj $(OBJS) version.res
+	$(link) glsl-lava.obj GlslProgram.obj libTexture3D.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del $(EXES) $(OBJS) glsl-info.obj glsl-example.obj glsl-example-2.obj glsl-diffuse.obj glsl-specular.obj glsl-specular-2.obj glsl-ocean.obj glsl-eroded.obj glsl-gooch.obj glsl-thin-layer.obj glsl-film.obj glsl-aniso.obj glsl-lava.obj glsl-film-2.obj glsl-cellular.obj boxes.obj PBuffer.obj Torus.obj GlslProgram.obj libTexture3D.obj version.res 2> nul
+
+!include <..\rules.win32>

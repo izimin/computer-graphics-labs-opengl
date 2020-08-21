@@ -1,0 +1,23 @@
+#
+# Makefile to build examples for cubemaps
+#
+# Author: Alex V. Boreskoff <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+EXES = cubemap.exe lamp.exe
+
+all: $(EXES)
+
+cubemap.exe: cubemap.obj version.res $(OBJS)
+	$(link) cubemap.obj $(OBJS) version.res $(LLDLIBS)
+
+lamp.exe: lamp.obj version.res $(OBJS)
+	$(link) lamp.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del cubemap.obj lamp.obj version.res $(EXES) $(OBJS) > nul
+
+!include <..\rules.win32>

@@ -1,0 +1,6 @@
+LIBRARY noise
+
+DESCRIPTION 'noise module'
+
+EXPORTS
+	initnoise

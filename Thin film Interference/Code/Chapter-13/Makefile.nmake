@@ -1,0 +1,30 @@
+#
+# Makefile to build occlusion query examples for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+#INC         = /Zi $(INC)
+#LFLAGS = /DEBUG /DEBUGTYPE:CV $(LFLAGS)
+EXES        = room.exe room-2.exe room-3.exe room-4.exe
+all: $(EXES)
+
+room.exe: room.obj boxes.obj SceneObject.obj $(OBJS) version.res
+	$(link) room.obj boxes.obj SceneObject.obj $(OBJS) version.res $(LLDLIBS)
+
+room-2.exe: room-2.obj boxes.obj SceneObject.obj Frustum.obj math3D.obj Plane.obj $(OBJS) version.res
+	$(link) room-2.obj boxes.obj SceneObject.obj Frustum.obj math3D.obj Plane.obj $(OBJS) version.res $(LLDLIBS)
+
+room-3.exe: room-3.obj boxes.obj SceneObject.obj Frustum.obj math3D.obj Plane.obj Cell.obj $(OBJS) version.res
+	$(link) room-3.obj boxes.obj SceneObject.obj Frustum.obj math3D.obj Plane.obj Cell.obj $(OBJS) version.res $(LLDLIBS)
+
+room-4.exe: room-4.obj boxes.obj SceneObject.obj Frustum.obj math3D.obj Plane.obj Cell.obj $(OBJS) version.res
+	$(link) room-4.obj boxes.obj SceneObject.obj Frustum.obj math3D.obj Plane.obj Cell.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del $(EXES) $(OBJS) version.res room.obj room-2.obj room-3.obj room-4.obj boxes.obj SceneObject.obj Frustum.obj Math3D.obj Plane.obj Cell.obj 2> nul
+
+!include <..\rules.win32>

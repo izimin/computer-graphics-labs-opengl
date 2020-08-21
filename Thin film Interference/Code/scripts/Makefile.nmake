@@ -1,0 +1,27 @@
+#
+# Makefile for noise python wrapper for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+
+PYTHON = c:/python22
+INC    = $(INC) -I$(PYTHON)/include -I../3D
+LLDLIBS= $(LFLAGS) $(PYTHON)/libs/python22.lib
+
+all: noise.pyd 
+
+noise.pyd: noise.obj noise-wrap.obj Vector3D.obj
+	$(link) /dll /out:noise.pyd /def:noise.def noise.obj noise-wrap.obj Vector3D.obj $(LLDLIBS)
+
+clean:
+	del noise.obj noise-wrap.obj Vector3D.obj noise.pyd noise.lib noise.exp 
+
+.cpp.obj:
+	$(CC) $(CFLAGS) $(INC) /c $<
+
+
+{..\3D}.cpp.obj::
+	$(CC) $(CFLAGS) $(INC) /c $<
+

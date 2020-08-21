@@ -1,0 +1,28 @@
+#
+# Makefile to build pbuffer examples for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+INC         = $(INC) $(PBUFFERINC)
+EXES        = example-1.exe example-2.exe room.exe
+
+all: $(EXES)
+
+example-1.exe: example-1.obj PBuffer.obj $(OBJS) version.res
+	$(link) example-1.obj PBuffer.obj $(OBJS) version.res $(LLDLIBS)
+
+
+example-2.exe: example-2.obj PBuffer.obj $(OBJS) version.res
+	$(link) example-2.obj PBuffer.obj $(OBJS) version.res $(LLDLIBS)
+
+room.exe: room.obj PBuffer.obj boxes.obj $(OBJS) version.res
+	$(link) room.obj PBuffer.obj boxes.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del $(EXES) $(OBJS) version.res example-1.obj example-2.obj room.obj PBuffer.obj boxes.obj 2> nul
+
+!include <..\rules.win32>

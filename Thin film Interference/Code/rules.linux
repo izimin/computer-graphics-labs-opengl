@@ -1,0 +1,24 @@
+#
+# Rules to compile programs under Linux
+#
+
+%.o: %.cpp
+	cc $(CFLAGS) $(INCLUDE) -c $<
+
+%.o: $(LIBEXTPATH)/%.cpp
+	cc $(CFLAGS) $(INCLUDE) -c $<
+
+%.o: $(LIBTEXTUREPATH)/%.cpp
+	cc $(CFLAGS) $(INCLUDE) -c $<
+
+%.o: $(LIB3DPATH)/%.cpp
+	cc $(CFLAGS) $(INCLUDE) -c $<
+
+%.o: $(UTILSPATH)/%.cpp
+	cc $(CFLAGS) $(INCLUDE) -c $<
+
+%.o: $(PBUFFERPATH)/%.cpp
+	cc $(CFLAGS) $(INCLUDE) -c $<
+
+%.o: $(PROGRAMPATH)/%.cpp
+	cc $(CFLAGS) $(INCLUDE) -c $<

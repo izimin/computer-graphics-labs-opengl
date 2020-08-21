@@ -1,0 +1,23 @@
+#
+# Makefile to build examples for chapter 5 for Mac OS X
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+include ../make.inc.macosx
+
+ALL = cubemap lamp
+all: $(ALL)
+
+cubemap: cubemap.o $(OBJS)
+	$(CC) $(LDFLAGS) cubemap.o $(OBJS) -o cubemap $(LIBS) -lc
+
+lamp: lamp.o $(OBJS)
+	$(CC) $(LDFLAGS) lamp.o $(OBJS) -o lamp $(LIBS) -lc
+
+
+clean:
+	rm -r -f $(ALL) $(OBJS) cubemap.o lamp.o 2> /dev/null
+
+
+include ../rules.macosx

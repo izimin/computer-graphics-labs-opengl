@@ -1,0 +1,30 @@
+!!ARBvp1.0
+#
+# simple vertex shader to setup data for fragment image processing
+#
+# on entry:
+#      vertex.position
+#      vertex.texcoord [0] - normal texture coordinates
+#
+# on exit:
+#     result.texcoord [0] - texture coordinates
+#
+
+ATTRIB	pos     = vertex.position;
+PARAM	mvp [4] = { state.matrix.mvp };
+
+			# store texcoord [0]
+MOV	result.texcoord [0], vertex.texcoord [0];
+
+			# copy primary and secondary colors
+MOV	result.color,           vertex.color;
+MOV	result.color.secondary, vertex.color.secondary;
+
+			# transform position into clip space
+DP4	result.position.x, vertex.position, mvp [0];
+DP4	result.position.y, vertex.position, mvp [1];
+DP4	result.position.z, vertex.position, mvp [2];
+DP4	result.position.w, vertex.position, mvp [3];
+
+			# we're done
+END

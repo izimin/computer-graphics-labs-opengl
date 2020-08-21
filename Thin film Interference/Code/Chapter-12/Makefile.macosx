@@ -1,0 +1,25 @@
+#
+# Makefile to build examples for chapter 11 for Mac OS X
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+include ../make.inc.macosx
+
+ALL         = distance-attenuation reflective-torus
+
+
+
+all: $(ALL)
+
+distance-attenuation: distance-attenuation.o $(OBJS)
+	$(CC) $(LDFLAGS) distance-attenuation.o $(OBJS) -o distance-attenuation $(LIBS) -lc
+
+
+reflective-torus: reflective-torus.o Torus.o Matrix3D.o $(OBJS)
+	$(CC) $(LDFLAGS) reflective-torus.o Torus.o Matrix3D.o $(OBJS) -o reflective-torus $(LIBS) -lc
+
+clean:
+	rm -r -f $(ALL) $(OBJS) distance-attenuation.o reflective-torus.o Torus.o Matrix3D.o 2> /dev/null
+
+include ../rules.macosx

@@ -1,0 +1,66 @@
+!!ARBvp1.0
+#
+# simple vertex shader to setup data for EMBM (true reflection mapping)
+#
+# on entry:
+#      vertex.position
+#      vertex.normal       - normal vector (n) of TBN basic
+#      vertex.texcoord [0] - normal texture coordinates
+#      vertex.texcoord [1] - tangent vector  (t)
+#      vertex.texcoord [2] - binormal vector (b)
+#
+#      program.local [0] - eye position
+#      program.local [1] - light position
+#
+# on exit:
+#     result.texcoord [0] - texture coordinates
+#     other texcoords set for GL_DOT_PRODUCT_REFLECT_CUBE_MAP_NV texture shader
+#
+
+PARAM	eye      = program.local [0];
+PARAM	light    = program.local [1];
+PARAM	mvp  [4] = { state.matrix.mvp };
+PARAM	mvit [4] = { state.matrix.modelview.invtrans };
+PARAM	mv   [4] = { state.matrix.modelview };
+
+TEMP	et;
+
+			# compute and transform eye vector
+DP4	et.x, -vertex.position, mv [0];
+DP4	et.y, -vertex.position, mv [1];
+DP4	et.z, -vertex.position, mv [2];
+DP4	et.w, -vertex.position, mv [3];
+
+			# compute 3*3 matrix and put it into texcoord [1], texcoord [2], texcoord [3]
+DP3	result.texcoord [1].x, mvit [0], vertex.texcoord [1];
+DP3	result.texcoord [1].y, mvit [0], vertex.texcoord [2];
+DP3	result.texcoord [1].z, mvit [0], vertex.normal;
+
+DP3	result.texcoord [2].x, mvit [1], vertex.texcoord [1];
+DP3	result.texcoord [2].y, mvit [1], vertex.texcoord [2];
+DP3	result.texcoord [2].z, mvit [1], vertex.normal;
+
+DP3	result.texcoord [3].x, mvit [2], vertex.texcoord [1];
+DP3	result.texcoord [3].y, mvit [2], vertex.texcoord [2];
+DP3	result.texcoord [3].z, mvit [2], vertex.normal;
+
+			# store transformed eye vector into w coords of tex1, tex2, tex3
+MOV	result.texcoord [1].w, et.x;
+MOV	result.texcoord [2].w, et.y;
+MOV	result.texcoord [3].w, et.z;
+
+			# store texcoord [0]
+MOV	result.texcoord [0], vertex.texcoord [0];
+
+			# copy primary and secondary colors
+MOV	result.color,           vertex.color;
+MOV	result.color.secondary, vertex.color.secondary;
+
+			# transform position into clip space
+DP4	result.position.x, vertex.position, mvp [0];
+DP4	result.position.y, vertex.position, mvp [1];
+DP4	result.position.z, vertex.position, mvp [2];
+DP4	result.position.w, vertex.position, mvp [3];
+
+			# we're done
+END

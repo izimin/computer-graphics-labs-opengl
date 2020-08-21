@@ -1,0 +1,21 @@
+#
+# Makefile to build sample application listing OpenGL extenstions
+#
+# Author: Alex V. Boreskoff <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+default: extstring.exe glexts.exe
+
+glexts.exe: glexts.obj version.res
+	$(link) glexts version.res $(LLDLIBS)
+
+extstring.exe: extstring.obj version.res
+	$(link) extstring version.res $(LLDLIBS)
+
+clean:
+	@del glexts.exe extstring.exe glexts.obj extstring.obj version.res > nul
+
+!include <..\rules.win32>

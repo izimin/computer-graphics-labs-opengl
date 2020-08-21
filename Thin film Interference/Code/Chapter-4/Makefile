@@ -1,0 +1,32 @@
+#
+# Makefile to build examples for chapter 4 for Linux
+#
+# Author: Alex V. Boreskoff, <alexboreskoff@mtu-net.ru>, <steps3d@narod.ru>
+#
+
+include ../make.inc
+
+ALL = env-combine-1 env-combine-2 env-combine-3 env-combine-4 env-combine-5
+all: $(ALL)
+
+env-combine-1: env-combine-1.o Torus.o $(OBJS)
+	cc $(LDFLAGS) env-combine-1.o Torus.o $(OBJS) -o env-combine-1 $(LIBS) -lc
+
+env-combine-2: env-combine-2.o Torus.o $(OBJS)
+	cc $(LDFLAGS) env-combine-2.o Torus.o $(OBJS) -o env-combine-2 $(LIBS) -lc
+
+env-combine-3: env-combine-3.o Torus.o $(OBJS)
+	cc $(LDFLAGS) env-combine-3.o Torus.o $(OBJS) -o env-combine-3 $(LIBS) -lc
+
+env-combine-4: env-combine-4.o Torus.o $(OBJS)
+	cc $(LDFLAGS) env-combine-4.o Torus.o $(OBJS) -o env-combine-4 $(LIBS) -lc
+
+env-combine-5: env-combine-5.o Torus.o $(OBJS)
+	cc $(LDFLAGS) env-combine-5.o Torus.o $(OBJS) -o env-combine-5 $(LIBS) -lc
+
+
+clean:
+	rm -r -f $(ALL) $(OBJS) env-combine-1.o env-combine-2.o env-combine-3.o env-combine-4.o env-combine-5.o Torus.o 2> /dev/nul
+
+
+include ../rules.linux

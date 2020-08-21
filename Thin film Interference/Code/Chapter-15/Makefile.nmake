@@ -1,0 +1,35 @@
+#
+# Makefile to build vertex program examples for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+EXES = vp-info.exe vp-diffuse.exe vp-specular.exe vp-embm.exe particles.exe
+
+all: $(EXES)
+
+vp-info.exe: vp-info.obj $(OBJS) version.res
+	$(link) vp-info.obj $(OBJS) version.res $(LLDLIBS)
+
+vp-diffuse.exe: vp-diffuse.obj Torus.obj $(OBJS) version.res
+	$(link) vp-diffuse.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+vp-specular.exe: vp-specular.obj Torus.obj $(OBJS) version.res
+	$(link) vp-specular.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+vp-embm.exe: vp-embm.obj Torus.obj VertexProgram.obj ParamProxy.obj $(OBJS) version.res
+	$(link) vp-embm.obj Torus.obj VertexProgram.obj ParamProxy.obj $(OBJS) version.res $(LLDLIBS)
+
+particles.exe: particles.obj VertexProgram.obj ParamProxy.obj $(OBJS) version.res
+	$(link) particles.obj VertexProgram.obj ParamProxy.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del $(EXES) $(OBJS) version.res vp-info.obj vp-diffuse.obj vp-specular.obj vp-embm.obj vp-glow.obj particles.obj Torus.obj VertexProgram.obj ParamProxy.obj 2> nul
+
+.cpp.obj:
+	$(CC) $(CFLAGS) $(INC) /c $<
+
+!include <..\rules.win32>

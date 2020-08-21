@@ -1,0 +1,18 @@
+#
+# Makefile to build fragment programs examples for Mac OS X
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+include ../make.inc.macosx
+
+all: room
+
+room: room.o boxes.o $(OBJS)
+	$(CC) $(LDFLAGS) room.o boxes.o $(OBJS) -o room $(LIBS) -lc
+
+clean:
+	rm -r -f room room.o boxes.o $(OBJS) 2> /dev/null
+
+
+include ../rules.macosx

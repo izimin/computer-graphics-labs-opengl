@@ -1,0 +1,53 @@
+#
+# Makefile for fragment program examples for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+INC  = $(INC) -I$(PBUFFERINC)
+EXES   = fp-info.exe fp-specular.exe fp-specular2.exe fp-specular3.exe chrome.exe Minneart.exe Minneart-2.exe aniso.exe fp-glow.exe fp-sepia.exe fp-edge.exe
+CFLAGS = $(CFLAGS) /GX
+
+all: $(EXES)
+
+
+fp-info.exe: fp-info.obj $(OBJS) version.res
+	$(link) fp-info.obj $(OBJS) version.res $(LLDLIBS)
+
+fp-specular.exe: fp-specular.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) Torus.obj version.res
+	$(link) fp-specular.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+fp-specular2.exe: fp-specular2.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) Torus.obj version.res
+	$(link) fp-specular2.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+fp-specular3.exe: fp-specular3.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) Torus.obj version.res
+	$(link) fp-specular3.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+chrome.exe: chrome.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) Torus.obj version.res
+	$(link) chrome.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+Minneart.exe: Minneart.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) Torus.obj version.res
+	$(link) Minneart.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+Minneart-2.exe: Minneart-2.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) Torus.obj version.res
+	$(link) Minneart-2.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+aniso.exe: aniso.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) version.res
+	$(link) aniso.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) version.res $(LLDLIBS)
+
+fp-glow.exe: fp-glow.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) Torus.obj version.res
+	$(link) fp-glow.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+fp-sepia.exe: fp-sepia.obj PBuffer.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) boxes.obj version.res
+	$(link) fp-sepia.obj PBuffer.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj boxes.obj $(OBJS) version.res $(LLDLIBS)
+
+fp-edge.exe: fp-edge.obj PBuffer.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj $(OBJS) boxes.obj version.res
+	$(link) fp-edge.obj PBuffer.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj boxes.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del $(EXES) $(OBJS) fp-info.obj fp-specular.obj fp-specular2.obj fp-specular3.obj chrome.obj Torus.obj VertexProgram.obj FragmentProgram.obj ParamProxy.obj Minneart.obj Minneart-2.obj aniso.obj fp-glow.obj fp-sepia.obj fp-edge.obj boxes.obj PBuffer.obj version.res 2> nul
+
+!include <..\rules.win32>

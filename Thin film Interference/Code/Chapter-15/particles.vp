@@ -1,0 +1,42 @@
+!!ARBvp1.0
+#
+# simple vertex shader particle system animation
+#
+# on entry:
+#      vertex.position
+#      vertex.texcoord [0] - r vector
+#      vertex.texcoord [1] - freq
+#
+#      program.local [0] - sin ( current time )
+#
+
+ATTRIB	pos     = vertex.position;
+ATTRIB	r       = vertex.texcoord [0];
+ATTRIB	freq    = vertex.texcoord [1];
+PARAM	t       = program.local [0];
+PARAM	mvp [4] = { state.matrix.mvp };
+PARAM	piVec   = { 0.159154943, 6.283185307, 0, 0 };
+PARAM	c1      = { 1, 1, 0, 1 };		# yellow
+PARAM	c2      = { 0, 1, 1, 1 };		# cyan
+TEMP	v, temp, cd;
+
+
+			# move vertex along radii
+MUL	temp, freq.x, t.x;
+ADD	temp, temp, 1;
+MAD	v, r, temp.x, pos;					# newPos = pos + r * ( 1 + freq*t )
+
+			# transform position into clip space
+DP4	result.position.x, v, mvp [0];
+DP4	result.position.y, v, mvp [1];
+DP4	result.position.z, v, mvp [2];
+DP4	result.position.w, v, mvp [3];
+
+			# compute colors
+ADD	cd, c2, -c1;						# cd = c2 - c1
+MAD	result.color, cd, t.x, c1;			# color = (c2-c1) * t + c1
+#MOV	result.color, vertex.color;
+MOV	result.color.secondary, vertex.color.secondary;
+
+			# we're done
+END

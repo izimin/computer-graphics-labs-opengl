@@ -1,0 +1,23 @@
+#
+# Makefile to build example of creating and using 3D texture for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+EXES = texture-3D.exe make-3d-noise.exe
+
+all: $(EXES)
+
+texture-3D.exe: texture-3D.obj Torus.obj $(OBJS) version.res
+	$(link) texture-3D.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+make-3d-noise.exe: make-3d-noise.obj noise.obj libTexture3D.obj $(OBJS) version.res
+	$(link) make-3d-noise.obj noise.obj libTexture3D.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del $(EXES) $(OBJS) version.res texture-3D.obj Torus.obj make-3d-noise.obj libTexture3D.obj noise.obj libTexture3D.obj 2> nul
+
+!include <..\rules.win32>

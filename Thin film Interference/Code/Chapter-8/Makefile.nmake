@@ -1,0 +1,32 @@
+#
+# Makefile to build diffuse lighting examples (via ARB_texture_env_dot3) for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+EXES = dot3-1.exe dot3-2.exe dot3-3.exe dot3-4.exe dot3-5.exe
+
+all: $(EXES)
+
+dot3-1.exe: dot3-1.obj $(OBJS) version.res
+	$(link) dot3-1.obj $(OBJS) version.res $(LLDLIBS)
+
+dot3-2.exe: dot3-2.obj $(OBJS) version.res
+	$(link) dot3-2.obj $(OBJS) version.res $(LLDLIBS)
+
+dot3-3.exe: dot3-3.obj $(OBJS) version.res
+	$(link) dot3-3.obj $(OBJS) version.res $(LLDLIBS)
+
+dot3-4.exe: dot3-4.obj $(OBJS) version.res
+	$(link) dot3-4.obj $(OBJS) version.res $(LLDLIBS)
+
+dot3-5.exe: dot3-5.obj Torus.obj $(OBJS) version.res
+	$(link) dot3-5.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del $(EXES) $(OBJS) version.res dot3-1.obj dot3-2.obj dot3-3.obj dot3-3.obj dot3-4.obj dot3-5.obj Torus.obj 2> nul
+
+!include <..\rules.win32>

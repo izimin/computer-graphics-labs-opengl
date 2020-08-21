@@ -1,0 +1,181 @@
+{\rtf1\ansi\ansicpg1251\deff0\deflang1049{\fonttbl{\f0\fnil Courier New;}}
+{\*\generator PolyEdit 5.40.11.2210;}\viewkind4\uc1\pard\f0\fs20  S3TC Compressed Texture Image Formats  \par
+  \par
+    Compressed texture images stored using the S3TC compressed image formats  \par
+    are represented as a collection of 4x4 texel blocks, where each block  \par
+    contains 64 or 128 bits of texel data.  The image is encoded as a normal  \par
+    2D raster image in which each 4x4 block is treated as a single pixel.  If  \par
+    an S3TC image has a width or height less than four, the data corresponding  \par
+    to texels outside the image are irrelevant and undefined.  \par
+  \par
+    When an S3TC image with a width of <w>, height of <h>, and block size of  \par
+    <blocksize> (8 or 16 bytes) is decoded, the corresponding image size (in  \par
+    bytes) is:  \par
+      \par
+        ceil(<w>/4) * ceil(<h>/4) * blocksize.  \par
+  \par
+    When decoding an S3TC image, the block containing the texel at offset  \par
+    (<x>, <y>) begins at an offset (in bytes) relative to the base of the  \par
+    image of:  \par
+  \par
+        blocksize * (ceil(<w>/4) * floor(<y>/4) + floor(<x>/4)).  \par
+  \par
+    The data corresponding to a specific texel (<x>, <y>) are extracted from a  \par
+    4x4 texel block using a relative (x,y) value of  \par
+      \par
+        (<x> modulo 4, <y> modulo 4).  \par
+  \par
+    There are four distinct S3TC image formats:  \par
+  \par
+    COMPRESSED_RGB_S3TC_DXT1_EXT:  Each 4x4 block of texels consists of 64  \par
+    bits of RGB image data.    \par
+  \par
+    Each RGB image data block is encoded as a sequence of 8 bytes, called (in  \par
+    order of increasing address):  \par
+  \par
+            c0_lo, c0_hi, c1_lo, c1_hi, bits_0, bits_1, bits_2, bits_3  \par
+  \par
+        The 8 bytes of the block are decoded into three quantities:  \par
+  \par
+            color0 = c0_lo + c0_hi * 256  \par
+            color1 = c1_lo + c1_hi * 256  \par
+            bits   = bits_0 + 256 * (bits_1 + 256 * (bits_2 + 256 * bits_3))  \par
+          \par
+        color0 and color1 are 16-bit unsigned integers that are unpacked to  \par
+        RGB colors RGB0 and RGB1 as though they were 16-bit packed pixels with  \par
+        a <format> of RGB and a type of UNSIGNED_SHORT_5_6_5.  \par
+  \par
+        bits is a 32-bit unsigned integer, from which a two-bit control code  \par
+        is extracted for a texel at location (x,y) in the block using:  \par
+  \par
+            code(x,y) = bits[2*(4*y+x)+1..2*(4*y+x)+0]  \par
+          \par
+        where bit 31 is the most significant and bit 0 is the least  \par
+        significant bit.  \par
+  \par
+        The RGB color for a texel at location (x,y) in the block is given by:  \par
+  \par
+            RGB0,              if color0 > color1 and code(x,y) == 0  \par
+            RGB1,              if color0 > color1 and code(x,y) == 1  \par
+            (2*RGB0+RGB1)/3,   if color0 > color1 and code(x,y) == 2  \par
+            (RGB0+2*RGB1)/3,   if color0 > color1 and code(x,y) == 3  \par
+  \par
+            RGB0,              if color0 <= color1 and code(x,y) == 0  \par
+            RGB1,              if color0 <= color1 and code(x,y) == 1  \par
+            (RGB0+RGB1)/2,     if color0 <= color1 and code(x,y) == 2  \par
+            BLACK,             if color0 <= color1 and code(x,y) == 3  \par
+  \par
+        Arithmetic operations are done per component, and BLACK refers to an  \par
+        RGB color where red, green, and blue are all zero.  \par
+  \par
+    Since this image has an RGB format, there is no alpha component and the  \par
+    image is considered fully opaque.  \par
+  \par
+  \par
+    COMPRESSED_RGBA_S3TC_DXT1_EXT:  Each 4x4 block of texels consists of 64  \par
+    bits of RGB image data and minimal alpha information.  The RGB components  \par
+    of a texel are extracted in the same way as COMPRESSED_RGB_S3TC_DXT1_EXT.  \par
+   \par
+        The alpha component for a texel at location (x,y) in the block is  \par
+        given by:  \par
+  \par
+            0.0,               if color0 <= color1 and code(x,y) == 3  \par
+            1.0,               otherwise  \par
+  \par
+        IMPORTANT:  When encoding an RGBA image into a format using 1-bit  \par
+        alpha, any texels with an alpha component less than 0.5 end up with an  \par
+        alpha of 0.0 and any texels with an alpha component greater than or  \par
+        equal to 0.5 end up with an alpha of 1.0.  When encoding an RGBA image  \par
+        into the COMPRESSED_RGBA_S3TC_DXT1_EXT format, the resulting red,  \par
+        green, and blue components of any texels with a final alpha of 0.0  \par
+        will automatically be zero (black).  If this behavior is not desired  \par
+        by an application, it should not use COMPRESSED_RGBA_S3TC_DXT1_EXT.  \par
+        This format will never be used when a generic compressed internal  \par
+        format (Table 3.16.2) is specified, although the nearly identical  \par
+        format COMPRESSED_RGB_S3TC_DXT1_EXT (above) may be.  \par
+  \par
+  \par
+    COMPRESSED_RGBA_S3TC_DXT3_EXT:  Each 4x4 block of texels consists of 64  \par
+    bits of uncompressed alpha image data followed by 64 bits of RGB image  \par
+    data.    \par
+  \par
+    Each RGB image data block is encoded according to the  \par
+    COMPRESSED_RGB_S3TC_DXT1_EXT format, with the exception that the two code  \par
+    bits always use the non-transparent encodings.  In other words, they are  \par
+    treated as though color0 > color1, regardless of the actual values of  \par
+    color0 and color1.  \par
+  \par
+    Each alpha image data block is encoded as a sequence of 8 bytes, called  \par
+    (in order of increasing address):  \par
+  \par
+            a0, a1, a2, a3, a4, a5, a6, a7  \par
+  \par
+        The 8 bytes of the block are decoded into one 64-bit integer:  \par
+  \par
+            alpha = a0 + 256 * (a1 + 256 * (a2 + 256 * (a3 + 256 * (a4 +  \par
+                         256 * (a5 + 256 * (a6 + 256 * a7))))))  \par
+  \par
+        alpha is a 64-bit unsigned integer, from which a four-bit alpha value  \par
+        is extracted for a texel at location (x,y) in the block using:  \par
+  \par
+            alpha(x,y) = bits[4*(4*y+x)+3..4*(4*y+x)+0]  \par
+  \par
+        where bit 63 is the most significant and bit 0 is the least  \par
+        significant bit.  \par
+  \par
+        The alpha component for a texel at location (x,y) in the block is  \par
+        given by alpha(x,y) / 15.  \par
+  \par
+   \par
+    COMPRESSED_RGBA_S3TC_DXT5_EXT:  Each 4x4 block of texels consists of 64  \par
+    bits of compressed alpha image data followed by 64 bits of RGB image data.  \par
+  \par
+    Each RGB image data block is encoded according to the  \par
+    COMPRESSED_RGB_S3TC_DXT1_EXT format, with the exception that the two code  \par
+    bits always use the non-transparent encodings.  In other words, they are  \par
+    treated as though color0 > color1, regardless of the actual values of  \par
+    color0 and color1.  \par
+  \par
+    Each alpha image data block is encoded as a sequence of 8 bytes, called  \par
+    (in order of increasing address):  \par
+  \par
+        alpha0, alpha1, bits_0, bits_1, bits_2, bits_3, bits_4, bits_5  \par
+  \par
+        The alpha0 and alpha1 are 8-bit unsigned bytesw converted to alpha  \par
+        components by multiplying by 1/255.  \par
+  \par
+        The 6 "bits" bytes of the block are decoded into one 48-bit integer:  \par
+  \par
+          bits = bits_0 + 256 * (bits_1 + 256 * (bits_2 + 256 * (bits_3 +   \par
+                          256 * (bits_4 + 256 * bits_5))))  \par
+  \par
+        bits is a 48-bit unsigned integer, from which a three-bit control code  \par
+        is extracted for a texel at location (x,y) in the block using:  \par
+  \par
+            code(x,y) = bits[3*(4*y+x)+1..3*(4*y+x)+0]  \par
+  \par
+        where bit 47 is the most significant and bit 0 is the least  \par
+        significant bit.  \par
+  \par
+        The alpha component for a texel at location (x,y) in the block is  \par
+        given by:  \par
+  \par
+              alpha0,                   code(x,y) == 0  \par
+              alpha1,                   code(x,y) == 1  \par
+  \par
+              (6*alpha0 + 1*alpha1)/7,  alpha0 > alpha1 and code(x,y) == 2  \par
+              (5*alpha0 + 2*alpha1)/7,  alpha0 > alpha1 and code(x,y) == 3  \par
+              (4*alpha0 + 3*alpha1)/7,  alpha0 > alpha1 and code(x,y) == 4  \par
+              (3*alpha0 + 4*alpha1)/7,  alpha0 > alpha1 and code(x,y) == 5  \par
+              (2*alpha0 + 5*alpha1)/7,  alpha0 > alpha1 and code(x,y) == 6  \par
+              (1*alpha0 + 6*alpha1)/7,  alpha0 > alpha1 and code(x,y) == 7  \par
+  \par
+              (4*alpha0 + 1*alpha1)/5,  alpha0 <= alpha1 and code(x,y) == 2  \par
+              (3*alpha0 + 2*alpha1)/5,  alpha0 <= alpha1 and code(x,y) == 3  \par
+              (2*alpha0 + 3*alpha1)/5,  alpha0 <= alpha1 and code(x,y) == 4  \par
+              (1*alpha0 + 4*alpha1)/5,  alpha0 <= alpha1 and code(x,y) == 5  \par
+              0.0,                      alpha0 <= alpha1 and code(x,y) == 6  \par
+              1.0,                      alpha0 <= alpha1 and code(x,y) == 7  \par
+  \par
+}
+ 

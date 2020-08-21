@@ -1,0 +1,19 @@
+﻿  Main.cpp
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(91): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(139): warning C4838: преобразование из "double" в "float" требует сужающего преобразования
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(135): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(136): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(137): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(153): warning C4838: преобразование из "double" в "float" требует сужающего преобразования
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(149): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(150): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(152): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(160): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\minwindef.h(130): warning C4005: APIENTRY: изменение макроопределения
+  c:\users\zimin\source\repos\cglab2_\packages\nupengl.core.0.1.0.1\build\native\include\glfw\glfw3.h(92): note: см. предыдущее определение "APIENTRY"
+c:\users\zimin\source\repos\cglab2_\cglab2_\main.cpp(263): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+c:\users\zimin\source\repos\cglab2_\cglab2_\main.cpp(265): warning C4305: аргумент: усечение из "double" в "float"
+c:\users\zimin\source\repos\cglab2_\cglab2_\main.cpp(409): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(196): warning C4172: возвращение адреса локальной или временной переменной : minorsMatrix
+c:\users\zimin\source\repos\cglab2_\cglab2_\matrix.h(172): warning C4172: возвращение адреса локальной или временной переменной : m3x3
+  CGLab2_.vcxproj -> C:\Users\zimin\source\repos\CGLab2_\Debug\CGLab2_.exe

@@ -1,0 +1,27 @@
+#
+# Include file with basic definitions for all examples for Linux
+#
+# Author: Alex V. Boreskoff
+#
+
+SHELL          = /bin/sh
+CC             = g++
+LIBPATH       +=  -L"/System/Library/Frameworks/OpenGL.framework/Libraries" -L/usr/local/lib
+FRAMEWORK      = -framework GLUT
+FRAMEWORK     += -framework OpenGL
+LIBEXTPATH     = ../libExt
+LIBTEXTUREPATH = ../libTexture
+LIB3DPATH      = ../3D
+UTILSPATH      = ../utils
+PBUFFERPATH    = ../PBuffer/Apple
+PROGRAMPATH    = ../Program
+
+PBUFFERINC      = -I../PBuffer -I../PBuffer/Apple
+CFLAGS          = -x c++ -g -D MACOSX -Wall -Wno-deprecated -ansi
+LIBS            = -lGL -lGLU -lm -lstdc++ -lm -ljpeg -lz -lpng
+
+LIBEXT_OBJS     = libExt.o
+LIBTEXTURE_OBJS = libTexture.o Texture.o CompressedTexture.o BmpLoader.o TgaLoader.o DdsLoader.o JpegLoader.o PngLoader.o Data.o ZipFileSystem.o
+OBJS            = $(LIBEXT_OBJS) $(LIBTEXTURE_OBJS) Vector3D.o
+INCLUDE         = -I$(LIBEXTPATH) -I$(LIBTEXTUREPATH) -I$(LIB3DPATH) -I$(UTILSPATH) -I$(PROGRAMPATH) $(PBUFFERINC) -I/usr/local/include
+LDFLAGS        += $(FRAMEWORK) $(LIBPATH)

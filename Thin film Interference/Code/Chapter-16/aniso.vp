@@ -1,0 +1,99 @@
+!!ARBvp1.0
+#
+# simple vertex shader to setup data for per-pixel anisotropic lighting
+#
+# on entry:
+#      vertex.position
+#      vertex.normal       - normal vector (n) of TBN basic
+#      vertex.texcoord [0] - normal texture coordinates
+#      vertex.texcoord [1] - tangent vector  (t)
+#      vertex.texcoord [2] - binormal vector (b)
+#
+#      program.local [0] - eye position
+#      program.local [1] - light position
+#
+#      state.matrix.program [0] - rotation matrix for the object
+#
+# on exit:
+#     result.texcoord [0] - texture coordinates
+#     result.texcoord [1] - l
+#     result.texcoord [2] - h
+#
+
+#	We assume that object whose vertices are passed are transformed by program [0] matrix
+#	Instead of transforming vertex and TBN basis with this matrix we transform light pos
+#	and eye pos with inverse matrix to leave TBN intact.
+#	This way we keep l, v and h vectors correct
+#
+
+ATTRIB	pos     = vertex.position;
+PARAM	eye     = program.local [0];
+PARAM	light   = program.local [1];
+PARAM	mvp [4] = { state.matrix.mvp };
+PARAM	mv0 [4] = { state.matrix.program [0].inverse };		# inverse rotation matrix
+PARAM	half    = 0.5;
+
+TEMP	l, l2, v, v2, h, h2, temp;
+TEMP	lt, ht, lt2;
+TEMP	vt, et;
+
+			# transform light position
+DP4	lt2.x, light, mv0 [0];
+DP4	lt2.y, light, mv0 [1];
+DP4	lt2.z, light, mv0 [2];
+DP4	lt2.w, light, mv0 [3];
+
+			# transform eye position
+DP4	et.x, eye, mv0 [0];
+DP4	et.y, eye, mv0 [1];
+DP4	et.z, eye, mv0 [2];
+DP4	et.w, eye, mv0 [3];
+
+			# compute l (vector to light)
+ADD	l, -pos, lt2;			# l = light - pos
+
+			# transform it into tangent space
+DP3	lt.x, l, vertex.texcoord [1];
+DP3	lt.y, l, vertex.texcoord [2];
+DP3	lt.z, l, vertex.normal;
+MOV	lt.w, l.w;
+
+			# store it into texcoord [1]
+MOV	result.texcoord [1], lt;
+
+			# compute v (vector to viewer)
+ADD	v, -pos, et;			# v = eye - pos
+
+			# normalize it (we need to correctly compute h)
+DP3	temp.x, v, v;				# now temp.x = (v,v)
+RSQ	temp.y, temp.x;				# compute inverse square root of (v,v)
+MUL	v, v, temp.y;				# normalize
+
+			# compute h = (l+v)/2
+ADD	h, l, v;
+MUL	h, h, half;
+
+			# transform it into tangent space
+DP3	ht.x, h, vertex.texcoord [1];
+DP3	ht.y, h, vertex.texcoord [2];
+DP3	ht.z, h, vertex.normal;
+MOV	ht.w, h.w;
+
+			# store it into texcoord [2]
+MOV	result.texcoord [2], ht;
+
+			# store texcoord [0]
+MOV	result.texcoord [0], vertex.texcoord [0];
+
+			# copy primary and secondary colors
+MOV	result.color,           vertex.color;
+MOV	result.color.secondary, vertex.color.secondary;
+
+			# transform position into clip space
+DP4	result.position.x, vertex.position, mvp [0];
+DP4	result.position.y, vertex.position, mvp [1];
+DP4	result.position.z, vertex.position, mvp [2];
+DP4	result.position.w, vertex.position, mvp [3];
+
+			# we're done
+END

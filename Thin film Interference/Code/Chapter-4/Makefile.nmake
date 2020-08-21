@@ -1,0 +1,33 @@
+#
+# Makefile to build examples for texture_env_combine
+#
+# Author: Alex V. Boreskoff <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+EXES = env-combine-1.exe env-combine-2.exe env-combine-3.exe env-combine-4.exe env-combine-5.exe
+
+all: $(EXES)
+
+env-combine-1.exe: env-combine-1.obj Torus.obj version.res $(OBJS)
+	$(link) env-combine-1.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+
+env-combine-2.exe: env-combine-2.obj Torus.obj version.res $(OBJS)
+	$(link) env-combine-2.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+env-combine-3.exe: env-combine-3.obj Torus.obj version.res $(OBJS)
+	$(link) env-combine-3.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+env-combine-4.exe: env-combine-4.obj Torus.obj version.res $(OBJS)
+	$(link) env-combine-4.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+env-combine-5.exe: env-combine-5.obj Torus.obj version.res $(OBJS)
+	$(link) env-combine-5.obj Torus.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del env-combine-1.obj env-combine-2.obj env-combine-3.obj env-combine-4.obj env-combine-5.obj Torus.obj version.res $(EXES) $(OBJS) > nul
+
+!include <..\rules.win32>

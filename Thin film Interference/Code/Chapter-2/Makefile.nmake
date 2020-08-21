@@ -1,0 +1,33 @@
+#
+# Makefile to build sample application listing OpenGL extenstions
+#
+# Author: Alex V. Boreskoff <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+EXES = multitex1.exe multitex2.exe multitex3.exe multitex4.exe fog.exe
+
+all: $(EXES)
+
+multitex1.exe: multitex1.obj version.res $(OBJS)
+	$(link) multitex1.obj $(OBJS) version.res $(LLDLIBS)
+
+multitex2.exe: multitex2.obj version.res $(OBJS)
+	$(link) multitex2.obj $(OBJS) version.res $(LLDLIBS)
+
+multitex3.exe: multitex3.obj version.res $(OBJS)
+	$(link) multitex3.obj $(OBJS) version.res $(LLDLIBS)
+
+multitex4.exe: multitex4.obj version.res $(OBJS)
+	$(link) multitex4.obj $(OBJS) version.res $(LLDLIBS)
+
+fog.exe: fog.obj version.res $(OBJS)
+	$(link) fog.obj $(OBJS) version.res $(LLDLIBS)
+
+
+clean:
+	@del multitex1.obj multitex2.obj multitex3.obj multitex4.obj fog.obj version.res $(EXES) $(OBJS) > nul
+
+!include <..\rules.win32>

@@ -1,0 +1,19 @@
+#
+# Makefile to build anisotropic filtering example for Win32
+#
+# Author: Alex V. Boreskoff, <steps3d@narod.ru>
+#
+
+!include <win32.mak>
+!include <..\nmake.inc>
+
+EXES = room.exe 
+all: $(EXES)
+
+room.exe: room.obj boxes.obj $(OBJS) version.res
+	$(link) room.obj boxes.obj $(OBJS) version.res $(LLDLIBS)
+
+clean:
+	@del $(EXES) $(OBJS) version.res room.obj boxes.obj  2> nul
+
+!include <..\rules.win32>
